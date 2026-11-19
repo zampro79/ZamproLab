@@ -11,6 +11,16 @@ spec.loader.exec_module(module)
 
 
 class PackageBuildTests(unittest.TestCase):
+    def test_idf_version_strict_normalization(self):
+        for value in ('5.5.3', 'v5.5.3'):
+            with self.subTest(value=value):
+                self.assertEqual(module.normalize_idf_version(value), '5.5.3')
+        for value in ('5.5.2', '5.5.4', 'v5.5.3-dirty', '5.5.3-dirty',
+                      '5.5', '', 'V5.5.3', '5.5.3 ', 'vv5.5.3', None, 553):
+            with self.subTest(value=value):
+                with self.assertRaises(ValueError):
+                    module.normalize_idf_version(value)
+
     def test_version_and_source_snapshot(self):
         self.assertRegex(module.version(), r'^\d+\.\d+\.\d+')
         state = module.snapshot()

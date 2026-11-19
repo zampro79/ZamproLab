@@ -39,6 +39,12 @@ def version():
     return v
 
 
+def normalize_idf_version(value):
+    if value not in ('5.5.3', 'v5.5.3'):
+        raise ValueError('ESP-IDF version is not 5.5.3')
+    return '5.5.3'
+
+
 def snapshot():
     # A parent Git repository must never be mistaken for this source tree.
     if not (ROOT / '.git').exists():
@@ -379,7 +385,6 @@ def package(target, lua, build, dest, profile=None):
                         'esp32s3-lua-psram-phase-b.defaults', 'esp32s3-lua-psram-phase-c2-256k.defaults'))
     run(['cmake', '-G', 'Ninja', '-S', ROOT, '-B', build, '-DIDF_TARGET=' + target,
          '-DSDKCONFIG=' + str(cfg), '-DZAM_EXPERIMENTAL_LUA=' + lua,
-         '-DEXTRA_COMPONENT_DIRS=' + str(ROOT / 'managed_components'),
          '-DPYTHON=' + sys.executable, '-DPYTHON_DEPS_CHECKED=1',
          '-DSDKCONFIG_DEFAULTS=' + ';'.join(map(str, defaults))])
     run(['ninja', '-C', build, '-j', '4'])
@@ -421,7 +426,7 @@ def package(target, lua, build, dest, profile=None):
                 'git_dirty': before['dirty'], 'source_snapshot_sha256': before['source_sha256'],
                 'target': target, 'lua_enabled': lua == 'ON', 'lua_version': '5.5.1' if lua == 'ON' else None,
                 'dependency_snapshot': deps,
-                'esp_idf_version': desc['git_revision'], 'flash_size': f'{flash_mb}MB', 'psram_enabled': 'CONFIG_SPIRAM=y' in config,
+                'esp_idf_version': normalize_idf_version(desc['git_revision']), 'flash_size': f'{flash_mb}MB', 'psram_enabled': 'CONFIG_SPIRAM=y' in config,
                 'hardware_profile': profile, 'rgb_enabled': rgb,
                 'flash_mode': flash_settings['flash_mode'], 'flash_frequency': flash_settings['flash_freq'],
                 'partition_layout_sha256': sha(ROOT / 'partitions.csv'), 'artifacts': artifacts}
@@ -429,8 +434,6 @@ def package(target, lua, build, dest, profile=None):
         manifest['source_provenance'] = before['source_provenance']
     if psram:
         manifest.update(psram_configuration=dict(PSRAM_METADATA), lua_heap_limit=262144, lua_allocator='psram')
-    if manifest['esp_idf_version'] != '5.5.3':
-        raise ValueError('ESP-IDF version is not 5.5.3')
     validate_manifest(manifest, dest)
     shutil.copyfile(ROOT / 'LICENSE', dest / 'LICENSE')
     shutil.copyfile(ROOT / 'THIRD_PARTY_NOTICES.md', dest / 'THIRD_PARTY_NOTICES.md')
