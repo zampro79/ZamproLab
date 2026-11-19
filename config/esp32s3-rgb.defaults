@@ -1,0 +1,3 @@
+# Profile for the verified S3 board; append after sdkconfig.defaults.
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+CONFIG_ZAM_RGB_VERIFIED_S3=y

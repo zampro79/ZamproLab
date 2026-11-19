@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ZamproLab</title>
+<script>try{const t=localStorage.getItem('zam-theme');document.documentElement.dataset.theme=['auto','light','dark'].includes(t)?t:'auto'}catch(e){document.documentElement.dataset.theme='auto'}</script><link rel="stylesheet" href="/style.css"><script defer src="/highlight.js"></script><script defer src="/terminal.js"></script><script defer src="/settings.js"></script><script defer src="/app.js"></script></head>
+<body><header class="header"><a class="brand" href="#lab" aria-label="ZamproLab LAB"><img class="logo" src="{{ZAM_LOGO_DATA}}" alt="" width="40" height="40"><span><strong>ZamproLab</strong><small>ESP32 Learning Lab</small></span></a><nav aria-label="Main sections"><button class="nav active" data-view="lab" aria-current="page">LAB</button><button class="nav" data-view="system">SYSTEM</button></nav><div class="header-end"><span id="connection" class="connection" role="status">Connecting</span><span id="target" class="target">—</span><label for="theme">Theme</label><select id="theme"><option value="auto">Auto</option><option value="light">Light</option><option value="dark">Dark</option></select></div></header>
+<main><section id="lab" aria-label="LAB"><div class="mobile-nav" aria-label="LAB panels"><button data-panel="project">Files</button><button class="selected" data-panel="editor">Editor</button><button data-panel="execution">Run</button><button data-panel="terminal">Terminal</button></div><div class="workspace"><aside class="panel project" data-pane="project"><div class="panel-head">PROJECT <button id="refresh-files">Refresh</button></div><div class="file-tools"><button id="new-file">＋ File</button><button id="new-folder">＋ Folder</button><button id="upload">Upload</button><input id="upload-input" type="file" multiple hidden><button id="import-library">Import Library</button><input id="import-library-input" type="file" accept=".lua" hidden></div><div class="file-tools"><button id="show-user-files">UserFS</button><button id="show-libraries">Libraries</button><button id="show-samples">Samples</button></div><div class="file-location"><button id="parent-dir" aria-label="Parent folder">↑</button><span id="current-dir">/</span></div><div id="file-list" class="file-list" aria-label="UserFS files"></div><p id="file-status" class="file-status" role="status"></p></aside><div id="split-explorer" class="splitter" role="separator" tabindex="0" aria-label="Explorer width" aria-orientation="vertical" aria-controls="file-list"></div><section class="panel editor" data-pane="editor"><div class="panel-head"><span>EDITOR <span id="file-title" class="muted"> / No file open</span></span><span><button id="save" disabled>Save</button> <button id="undo" disabled>Undo</button> <button id="redo" disabled>Redo</button></span></div><div id="editor-empty" class="editor-empty"><div class="zamprolab-banner" role="img" aria-label="ZamproLab"></div><h1>Your programming lab</h1><p>Open or create a text file to get started.</p></div><textarea id="editor-text" aria-label="Text editor" spellcheck="false" hidden></textarea><p id="editor-notice" class="editor-notice" role="status" hidden></p></section><aside class="panel execution" data-pane="execution"><div class="panel-head">EXECUTION</div><div class="panel-body"><div class="execution-file"><strong>File in editor</strong><div id="execution-file">No file open</div></div><div class="actions"><button id="program-run" disabled class="run">▶ RUN</button><button id="program-stop" disabled>■ STOP</button> <button id="autorun-copy" disabled>Copy to Autorun</button> <button id="autorun-remove" disabled>Remove from Autorun</button></div><div class="runtime" aria-live="polite"><div>Device status: <strong id="program-state">Checking</strong></div><div>Last runtime result: <strong id="program-result">—</strong></div><p id="program-message" role="status"></p></div></div></aside><div id="split-terminal" class="splitter" role="separator" tabindex="0" aria-label="Terminal height" aria-orientation="horizontal" aria-controls="terminal-body"></div><section class="panel terminal" data-pane="terminal"><div class="panel-head"><span>TERMINAL</span><span><button id="terminal-clear">Clear</button> <button id="terminal-toggle" aria-expanded="true">Collapse</button></span></div><div id="terminal-state" role="status">Connecting to output…</div><pre id="terminal-body" class="terminal-body" aria-label="Output Lua"></pre></section></div></section>
+<section id="system" hidden><div class="system-heading"><div><div class="eyebrow">DEVICE / SYSTEM</div><h1>System overview</h1><p>Live device diagnostics.</p></div><span id="freshness">Waiting for data</span></div><div class="cards"><article class="card"><h2>Overview</h2><dl><dt>Device</dt><dd data-value="name">—</dd><dt>Firmware</dt><dd data-value="version">—</dd><dt>Target</dt><dd data-value="target">—</dd><dt>Uptime</dt><dd data-value="uptime">—</dd><dt>Wi-Fi STA</dt><dd data-value="sta_state">—</dd><dt>HTTP</dt><dd data-value="http">—</dd></dl></article><article class="card"><h2>Hardware</h2><dl><dt>Chip / target</dt><dd data-value="target">—</dd><dt>Core</dt><dd data-value="cores">—</dd><dt>Revision</dt><dd data-value="revision">—</dd><dt>ESP-IDF</dt><dd data-value="idf_version">—</dd><dt>Flash</dt><dd data-value="flash_size">—</dd></dl></article><article class="card"><h2>Memory</h2><dl><dt>Free heap</dt><dd data-value="heap_free">—</dd><dt>Internal heap</dt><dd data-value="heap_internal_free">—</dd><dt>Largest block</dt><dd data-value="heap_internal_largest_block">—</dd><dt>Minimum heap</dt><dd data-value="heap_minimum_free">—</dd><dt>External heap</dt><dd data-value="heap_external_free">—</dd></dl></article><article class="card"><h2>Wi-Fi</h2><dl><dt>Policy</dt><dd data-value="configured_mode">—</dd><dt>Mode</dt><dd data-value="effective_mode">—</dd><dt>STA</dt><dd data-value="sta_state">—</dd><dt>SSID STA</dt><dd data-value="sta_ssid">—</dd><dt>IPv4 STA</dt><dd data-value="sta_ip">—</dd><dt>SSID AP</dt><dd data-value="ap_ssid">—</dd><dt>IPv4 AP</dt><dd data-value="ap_ip">—</dd><dt>Fallback</dt><dd data-value="fallback">—</dd><dt>AP clients</dt><dd data-value="ap_clients">—</dd></dl></article><article class="card"><h2>Storage</h2><p>WebFS / UserFS status and capacity are not available via API.</p></article><article class="card"><h2>Settings</h2><p>Configure network settings.</p><button class="settings-button" data-view="settings">Configure device</button><p>Change the browser theme using the selector above.</p></article></div></section></main><footer><span>Firmware <b data-value="version">—</b></span><span>Uptime <b data-value="uptime">—</b></span><span>Heap <b data-value="heap_free">—</b></span><span>Wi-Fi <b data-value="sta_state">—</b></span><span>WebFS / UserFS: unavailable</span></footer><script>
+// Controller separato: il Program Manager remoto resta l'unica fonte dello stato.
+window.ZamExecution=({lab,editor,save,fetchAPI,validName,isActive})=>{
+  const $=s=>document.querySelector(s);
+  // Presentation state only; STATUS is authoritative and mutating calls are never retried.
+  const program={status:null,availability:'unknown',pollTimer:null,polling:false,again:false,epoch:0,mutating:false,message:'',messageCode:''};
+  const programStates={idle:'Idle',starting:'Starting',running:'Running',stopping:'Stopping',cleanup:'Cleaning up'};
+  const programResults={ok:'Completed',stopped:'Stopped',syntax_error:'Syntax error',runtime_error:'Runtime error',memory_error:'Out of memory',load_error:'Load error',internal_error:'Internal error'};
+  const programActive=isActive;
+  function executable(path){return typeof path==='string' && path.startsWith('/') && path.length<=192 && !/^\/(web|user)(\/|$)/.test(path) && path.endsWith('.lua') && path.slice(1).split('/').every(validName);}
+  function renderProgram(){
+    const available=program.availability==='available' && program.status;
+    const current=available ? program.status.state : null;
+    $('#execution-file').textContent=lab.file || 'No file open';
+    $('#program-state').textContent=available ? programStates[current] : program.availability==='absent' ? 'Runtime Lua unavailable' : 'Status unavailable';
+    $('#program-result').textContent=available && program.status.last_result ? programResults[program.status.last_result] : '—';
+    $('#program-message').textContent=program.message;
+    $('#program-run').disabled=!!program.mutating || !!lab.busy || !available || current!=='idle' || !lab.file || editor.hidden || !lab.etag || !executable(lab.file);
+    $('#program-stop').disabled=!!program.mutating || !available || !['starting','running'].includes(current);
+  }
+  function programSchedule(ms){clearTimeout(program.pollTimer);if(programActive())program.pollTimer=setTimeout(pollProgram,ms);}
+  function validProgramStatus(value){return value && typeof value==='object' && Object.prototype.hasOwnProperty.call(programStates,value.state) && (value.last_result===null || Object.prototype.hasOwnProperty.call(programResults,value.last_result));}
+  async function pollProgram(){
+    clearTimeout(program.pollTimer);if(!programActive())return;
+    if(program.polling){program.again=true;return;}
+    program.polling=true;const epoch=program.epoch;
+    try{
+      const controller=new AbortController(),timeoutId=setTimeout(()=>controller.abort(),4000);
+      let data;
+      try {
+        const r=await fetch('/api/program/status',{signal:controller.signal,cache:'no-store'});
+        if(!r.ok){const e=new Error('HTTP');e.http=true;e.status=r.status;throw e;}
+        data=await r.json();
+      } finally { clearTimeout(timeoutId); }
+      if(!validProgramStatus(data))throw new Error('invalid program status');
+      if(epoch!==program.epoch)return;
+      program.status=data;program.availability='available';
+      if(program.messageCode==='poll-error'){program.message='';program.messageCode='';}
+    }catch(e){
+      if(epoch!==program.epoch)return;
+      program.status=null;
+      if(e.status===404){program.availability='absent';program.message='';}
+      else {program.availability='unknown';program.messageCode='poll-error';program.message=e instanceof SyntaxError || e.message==='invalid program status'?'Invalid runtime response.':'Runtime connection unavailable.';}
+    }finally{
+      program.polling=false;renderProgram();const immediate=program.again;program.again=false;
+      const active=program.availability==='available' && program.status && program.status.state!=='idle';
+      programSchedule(immediate?0:program.availability==='absent'?30000:active?500:5000);
+    }
+  }
+  function programReason(e){return ({400:'Invalid request.',404:'Runtime Lua unavailable.',409:'Runtime is busy or completing an operation.',412:'File changed: reopen it before saving.',413:'Request too large.',415:'Unsupported request format.',500:'Device internal error.',503:'Runtime temporarily unavailable.'})[e.status] || (e.name==='AbortError'?'Timed out; outcome unconfirmed.':'Connection lost; outcome unconfirmed.');}
+  function newRequestId(){
+    if(globalThis.crypto && crypto.randomUUID)return crypto.randomUUID();
+    if(!globalThis.crypto || !crypto.getRandomValues)throw new Error('random unavailable');
+    const b=crypto.getRandomValues(new Uint8Array(16));b[6]=(b[6]&15)|64;b[8]=(b[8]&63)|128;
+    const h=Array.from(b,x=>x.toString(16).padStart(2,'0')).join('');return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
+  }
+  async function sendProgram(kind,path,request_id){
+    const controller=new AbortController(),timeoutId=setTimeout(()=>controller.abort(),6000);
+    try{
+      const options=kind==='run'?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path,request_id})}:{method:'POST'};
+      const r=await fetch('/api/program/'+kind,{...options,signal:controller.signal,cache:'no-store'});
+      if(!r.ok){const e=new Error('HTTP');e.http=true;e.status=r.status;throw e;}
+      if(!((kind==='run' && r.status===202) || (kind==='stop' && (r.status===200 || r.status===202))))throw new Error('unexpected response');
+      const reply=await r.json();if(!reply || reply.accepted!==true)throw new Error('invalid response');
+    } finally {clearTimeout(timeoutId);}
+  }
+  async function mutateProgram(kind){
+    if(program.mutating)return;
+    const start=kind==='run',path=lab.file;
+    if(program.availability!=='available' || !program.status)return;
+    if(start && (program.status.state!=='idle' || !path || editor.hidden || !lab.etag || !executable(path) || lab.busy))return;
+    if(!start && !['starting','running'].includes(program.status.state))return;
+    program.mutating=true;program.epoch++;program.message='';program.messageCode='';renderProgram();
+    try{
+      if(start && lab.dirty){
+        if(!confirm('File has unsaved changes. Save before running?')){program.message='Run cancelled: save the file first.';return;}
+        if(lab.file!==path || !(await save()) || lab.file!==path || lab.dirty){program.message='Run not started: save failed or file changed.';return;}
+      }
+      if(start && (lab.file!==path || lab.dirty || editor.hidden || !lab.etag)){program.message='Run not started: file changed or not saved.';return;}
+      let request_id;if(start){try{request_id=newRequestId();}catch(_){program.message='Cannot generate a secure RUN identifier.';return;}}
+      await sendProgram(kind,path,request_id);
+      program.message=start?'RUN request accepted.':'STOP request accepted.';
+    }catch(e){program.message=programReason(e);if(e.status===404)program.availability='absent';else if(!e.http)program.availability='unknown';program.status=null;}
+    finally{program.epoch++;program.status=null;if(program.availability!=='absent')program.availability='unknown';program.mutating=false;renderProgram();if(programActive())pollProgram();}
+  }
+  $('#program-run').addEventListener('click',()=>mutateProgram('run'));
+  $('#program-stop').addEventListener('click',()=>mutateProgram('stop'));
+
+
+
+  return {
+    render:renderProgram,
+    start:()=>{renderProgram();if(programActive())pollProgram();},
+    viewChanged:()=>{program.epoch++;program.status=null;if(program.availability!=='absent')program.availability='unknown';renderProgram();clearTimeout(program.pollTimer);if(programActive())pollProgram();},
+    visibilityChanged:()=>{program.epoch++;program.status=null;if(program.availability!=='absent')program.availability='unknown';renderProgram();clearTimeout(program.pollTimer);if(programActive())pollProgram();}
+  };
+};
+</script>
+</body></html>

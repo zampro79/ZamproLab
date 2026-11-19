@@ -1,0 +1,2 @@
+#pragma once
+#define CONFIG_ZAM_LUA_SOURCE_LIMIT 32768

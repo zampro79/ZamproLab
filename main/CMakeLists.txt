@@ -1,0 +1,5 @@
+idf_component_register(SRCS "main.c" INCLUDE_DIRS "." REQUIRES zam_console zam_config zam_system zam_wifi zam_http zam_storage heap zam_rgb)
+if(ZAM_EXPERIMENTAL_LUA)
+  target_compile_definitions(${COMPONENT_LIB} PRIVATE ZAM_EXPERIMENTAL_LUA=1)
+  target_link_libraries(${COMPONENT_LIB} PUBLIC idf::zam_program)
+endif()

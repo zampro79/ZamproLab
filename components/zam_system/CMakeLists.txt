@@ -1,0 +1,7 @@
+idf_component_register(SRCS "zam_system.c" INCLUDE_DIRS "include" REQUIRES console esp_hw_support esp_psram spi_flash esp_timer heap esp_system esp_app_format)
+if(CONFIG_ZAM_LUA_PSRAM_EXPERIMENT AND NOT ZAM_EXPERIMENTAL_LUA)
+  message(FATAL_ERROR "Lua PSRAM experiment requires ZAM_EXPERIMENTAL_LUA")
+endif()
+if(CONFIG_ZAM_LUA_PSRAM_EXPERIMENT AND ZAM_EXPERIMENTAL_LUA)
+  target_link_libraries(${COMPONENT_LIB} PRIVATE idf::zam_runtime_lua)
+endif()

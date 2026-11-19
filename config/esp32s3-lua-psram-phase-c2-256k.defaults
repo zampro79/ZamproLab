@@ -1,0 +1,2 @@
+# Phase C2: append after the verified PSRAM phase B defaults.
+CONFIG_ZAM_LUA_HEAP_LIMIT=262144

@@ -1,0 +1,8 @@
+menu "ZamproLab RGB indicator"
+config ZAM_RGB_VERIFIED_S3
+    bool "Enable RGB on verified ESP32-S3 board (GPIO48)"
+    depends on IDF_TARGET_ESP32S3
+    default n
+    help
+        Enable only on the verified board with a GRB WS2812-compatible LED on GPIO48.
+endmenu

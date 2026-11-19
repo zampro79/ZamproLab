@@ -1,0 +1,2 @@
+# Phase B: append after esp32s3-rgb-psram-experiment.defaults.
+CONFIG_ZAM_LUA_PSRAM_EXPERIMENT=y

@@ -1,0 +1,9 @@
+# UART0 is shared by logging and the interactive console on both targets.
+CONFIG_ESP_CONSOLE_UART_DEFAULT=y
+# Temporary common baseline; N16R8 flash and PSRAM need board-specific validation.
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+# Two LittleFS partitions share the 4 MB reference layout.
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+# Needed to service the console UART while flash cache is disabled.
+CONFIG_UART_ISR_IN_IRAM=y

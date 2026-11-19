@@ -1,0 +1,8 @@
+set(program_sources)
+if(ZAM_EXPERIMENTAL_LUA)
+  list(APPEND program_sources zam_program.c zam_output_ring.c zam_program_console.c)
+endif()
+idf_component_register(SRCS ${program_sources} INCLUDE_DIRS "include" REQUIRES esp_timer zam_files console zam_rgb)
+if(ZAM_EXPERIMENTAL_LUA)
+  target_link_libraries(${COMPONENT_LIB} PRIVATE idf::zam_runtime_lua)
+endif()

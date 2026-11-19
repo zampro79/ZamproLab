@@ -1,0 +1,6 @@
+idf_component_register(SRCS "zam_http.c" "zam_web_stream.c" "zam_http_web.c" "zam_http_files.c" "zam_http_wifi.c" INCLUDE_DIRS "include" REQUIRES esp_http_server json zam_system zam_wifi zam_storage zam_files mbedtls)
+if(ZAM_EXPERIMENTAL_LUA)
+  target_sources(${COMPONENT_LIB} PRIVATE "zam_http_program.c" "zam_http_output.c")
+  target_compile_definitions(${COMPONENT_LIB} PRIVATE ZAM_EXPERIMENTAL_LUA=1)
+  target_link_libraries(${COMPONENT_LIB} PRIVATE idf::zam_program)
+endif()
