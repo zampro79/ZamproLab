@@ -1,6 +1,6 @@
 # Release readiness
 
-## Current status — source-only preparation
+## Source-only preparation — historical review
 
 The project remains private. Source-only preparation is under review; it is **not** permission to publish the current repository or its history. The owner selected MIT for original ZamproLab source, including original frontend, scripts, samples and documentation. Third-party and adapted material retains its own terms; individual adapted source fragments still require review. See [LICENSE](../LICENSE), [third-party notices](../THIRD_PARTY_NOTICES.md) and [source provenance](source-provenance.md).
 
@@ -8,7 +8,7 @@ Redistribution of precompiled Factory binaries remains suspended pending clarifi
 
 Classic and one S3-N16R8 were tested on hardware, including the explicit PSRAM profile and WebFS streaming. Validation is board- and scenario-specific; S3 external GPIO/I²C hardware and every board variant are not validated. HTTP has no authentication or TLS. Build results are not proof of bit-for-bit reproducibility. Before a future release, resolve the applicable provenance and notices, review the graphics and publication scope, verify the source-only build, packaging and security, and obtain publication authorization.
 
-## Source-only consolidation gate
+## Historical source-only consolidation gate
 
 The current source tree is being prepared for a reviewed snapshot without Git history. Do not include Factory images, HAL archives, flash dumps, private backups or populated UserFS. The embedded branding is a required build input whose redistribution rights remain to be established; large masters and legacy artwork need an explicit inclusion decision. Review the full snapshot and history separately: a clean tree alone does not establish provenance. The packager accepts a Gitless snapshot with a manifest; [source provenance](source-provenance.md#source-snapshots-and-packaging) describes the procedure and limits. No publication or release is authorized by this preparation.
 

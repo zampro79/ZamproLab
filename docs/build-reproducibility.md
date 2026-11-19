@@ -14,8 +14,8 @@ The project selects `dependencies.lock.esp32` or `dependencies.lock.esp32s3`; do
 From a clean clone after activating ESP-IDF:
 
 ```sh
-git clone https://github.com/zampro79/esp32_ZamproLab.git
-cd esp32_ZamproLab
+git clone https://github.com/zampro79/ZamproLab.git
+cd ZamproLab
 python3 tools/prepare_lua.py
 export LUA_DIR="$PWD/.deps/lua-5.5.1"
 idf.py -B build-esp32 -D SDKCONFIG=sdkconfig.esp32 set-target esp32 build
@@ -31,7 +31,7 @@ idf.py -B build-nolua-esp32s3 -D SDKCONFIG=sdkconfig.nolua.esp32s3 -D ZAM_EXPERI
 
 After obtaining LittleFS, `tools/build_storage_images.sh build-storage-images` generates and verifies WebFS and an empty UserFS without writing to hardware. Do not flash the empty UserFS over existing data. Relevant host checks include `tests/run_program_manager_host.sh`, `tests/run_lua_allocator_host.sh`, `tests/run_lua_core_host.sh`, `tests/run_files_paths_test.sh`, `tests/run_storage_mount_test.sh`, and `tests/run_wifi_policy_test.sh`; Lua tests need a verified `LUA_DIR`.
 
-Cached sources and tools can support an offline build; a clean computer still needs verified dependencies. An offline ESP32 Lua-ON build succeeded with `IDF_COMPONENT_CHECK_NEW_VERSION=0`. Strict checksum reconfiguration required the registry in the documented test, and one additional offline invocation hung after linking despite producing a binary. Bit-for-bit reproducibility is not guaranteed. The stable S3 configuration uses 4 MB flash without PSRAM and is not a hardware validation of N16R8.
+Cached sources and tools can support an offline build; a clean computer still needs verified dependencies. An offline ESP32 Lua-ON build succeeded with `IDF_COMPONENT_CHECK_NEW_VERSION=0`. Strict checksum reconfiguration required the registry in the documented test, and one additional offline invocation hung after linking despite producing a binary. Bit-for-bit reproducibility is not guaranteed. The generic S3 configuration uses 4 MB flash without PSRAM and is not a hardware validation of N16R8. For the separately verified N16R8 PSRAM profile, use the [profile-specific command](psram-lua.md#configuration).
 
 > Historical phase 7D validation is retained below in Italian.
 

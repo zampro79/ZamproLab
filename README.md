@@ -1,5 +1,9 @@
 # ZamproLab
 
+![ZamproLab banner](web/assets/banner.png)
+
+![ZamproLab logo](web/assets/logo.png)
+
 ZamproLab is an embedded learning environment for ESP32. Its browser-based LAB lets you manage UserFS files, edit and save Lua programs, request RUN and STOP, and view their output. Samples are included in the read-only WebFS and must be copied to UserFS before they can run.
 
 ## Features and hardware
@@ -14,7 +18,14 @@ This source distribution includes no precompiled firmware. Obtain build dependen
 
 ## Requirements and build
 
-Use ESP-IDF 5.5.3, the associated toolchains, CMake, Ninja and Python. Initial dependency acquisition requires network access. From the project root after activating ESP-IDF:
+Use ESP-IDF 5.5.3, the associated toolchains, CMake, Ninja and Python. Initial dependency acquisition requires network access. Install and activate ESP-IDF using the [Espressif guide](https://docs.espressif.com/projects/esp-idf/en/v5.5.3/esp32/get-started/). Then clone this distribution repository and enter it:
+
+```sh
+git clone https://github.com/zampro79/ZamproLab.git
+cd ZamproLab
+```
+
+From the project root with ESP-IDF active:
 
 ```sh
 python3 tools/prepare_lua.py
@@ -25,7 +36,7 @@ idf.py -B build-esp32s3 -D SDKCONFIG=sdkconfig.esp32s3 set-target esp32s3 build
 
 Lua is enabled by default. Use a separate build directory and `-D ZAM_EXPERIMENTAL_LUA=OFF` for a diagnostic build without Lua. See [build and dependencies](docs/build-reproducibility.md) for reproducibility and offline limitations.
 
-For the explicitly validated S3-N16R8 RGB board with octal PSRAM, select the ordered defaults in [PSRAM configuration](docs/psram-lua.md#configuration); a generic S3 build does not enable that profile. Generate the separate LittleFS images after the LittleFS component has been acquired:
+For the explicitly validated S3-N16R8 RGB board with octal PSRAM, use the separate build command in [PSRAM configuration](docs/psram-lua.md#configuration); a generic S3 build does not enable that profile. Generate the separate LittleFS images after the LittleFS component has been acquired:
 
 ```sh
 ./tools/build_storage_images.sh build-storage-images
@@ -43,11 +54,11 @@ For a previously provisioned and verified ESP32 Classic, select the actual seria
 idf.py -B build-esp32 -D SDKCONFIG=sdkconfig.esp32 -p /dev/ttyUSB0 app-flash monitor
 ```
 
-Exit the monitor with `Ctrl+]`. Use the corresponding target, configuration and UART0 port for S3. Connect a browser to the device on a trusted network: the default AP address is `http://192.168.4.1/`; on STA use the address reported by `wifi status`. See [Wi-Fi](docs/wifi.md), [Web Settings](docs/wifi-web-settings.md), [console](docs/console.md), and [HTTP](docs/http.md).
+Exit the monitor with `Ctrl+]`. Use the corresponding target, configuration and UART0 port for S3. On a new installation without STA credentials, look for `ZamproLab-XXXXXX` (the suffix uses the final three base MAC bytes), connect using the educational initial AP password `ZamproLab`, and open `http://192.168.4.1/` on a trusted network. Change the AP password via the serial console. Existing NVS settings may instead select a different AP name, password or Wi-Fi mode. On STA use the address reported by `wifi status`; if Wi-Fi is unavailable, connect UART0 at 115200 baud and check boot messages and `wifi status`. See [Wi-Fi](docs/wifi.md), [Web Settings](docs/wifi-web-settings.md), [console](docs/console.md), and [HTTP](docs/http.md).
 
 ## Using the LAB
 
-Open or create a text file in UserFS, edit it, save it, and select RUN. The Terminal shows program output; STOP requests cooperative termination. To use an example, open **Explorer → Samples**, select a sample, copy it to the current UserFS directory, open and inspect the copy, then select RUN. STOP can be used where needed. Samples are not executed directly from WebFS.
+Open or create a text file in UserFS, edit it, save it, and select RUN. The Terminal shows program output; STOP requests cooperative termination. To use an example, open **Explorer → Samples**, select a sample, copy it to the current UserFS directory, open and inspect the copy, then select RUN. STOP can be used where needed. Samples are not executed directly from WebFS. For a first test choose `01_hello.lua`: after RUN the Terminal should show `Hello from ZamproLab!` and the program finishes on its own. Use `02_countdown.lua` to try cooperative STOP; check the Execution status and Terminal for errors.
 
 The Program Manager accepts one active execution at a time. Lua uses a 49,152-byte (48 KiB) internal allocation limit on Classic and generic S3. The explicit verified S3-N16R8 PSRAM profile uses a 262,144-byte limit in PSRAM; it is a dynamic allocation ceiling, not a preallocated pool. STOP is cooperative and is not guaranteed to interrupt every native call immediately. Cleanup releases resources on completion, STOP, errors and OOM where possible. See [Lua runtime](docs/lua-runtime.md), [Program API](docs/program-api.md), and [Terminal](docs/terminal-http.md).
 

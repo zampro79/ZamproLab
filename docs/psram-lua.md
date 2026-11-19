@@ -14,6 +14,14 @@ With `ZAM_EXPERIMENTAL_LUA=ON`, provide these `SDKCONFIG_DEFAULTS` files in orde
 4. `config/esp32s3-lua-psram-phase-b.defaults`
 5. `config/esp32s3-lua-psram-phase-c2-256k.defaults`
 
+From the project root, after activating ESP-IDF 5.5.3 and setting `LUA_DIR` as described in [build and dependencies](build-reproducibility.md), use a separate configuration and build directory:
+
+```sh
+idf.py -B build-s3-psram -D SDKCONFIG=sdkconfig.s3-psram -D 'SDKCONFIG_DEFAULTS=sdkconfig.defaults;config/esp32s3-rgb.defaults;config/esp32s3-rgb-psram-experiment.defaults;config/esp32s3-lua-psram-phase-b.defaults;config/esp32s3-lua-psram-phase-c2-256k.defaults' set-target esp32s3 build
+```
+
+The application image is `build-s3-psram/zamprolab.bin`. Use this profile only on a verified compatible board; generic S3 boards should use the generic build.
+
 The profile is explicitly selected and requires the verified S3 RGB setting, 16 MiB flash, initialized octal PSRAM at 80 MHz and allocation through explicit capabilities. CMake rejects incompatible requests and conflicting explicit defaults and existing `sdkconfig` values; align the configuration files when changing profiles. The hardware setting identifies a selected profile, not the physical module: confirm the board independently.
 
 ## Allocation and diagnostics

@@ -33,9 +33,33 @@ The pinned component is [joltwallet/littlefs 1.20.4](https://components.espressi
 sha256sum build-storage-images/webfs.bin build-storage-images/userfs-empty.bin
 ```
 
-The tool uses the component's LittleFS sources, bundles Samples into WebFS and verifies the images; it does not write to the board. `LITTLEFS_COMPONENT_DIR` can select a verified component. A normal firmware build does not automatically flash filesystem images.
+The tool uses the component's LittleFS sources, bundles the eight generic Samples and web assets into `build-storage-images/webfs.bin` (786,432 bytes) and verifies the images; it does not write to the board. It also creates `userfs-empty.bin`, which contains no user files. Optional BME280 and SSD1306 drivers and Samples 08–10 are not included. `LITTLEFS_COMPONENT_DIR` can select a verified component. A normal firmware build does not automatically flash filesystem images.
 
-**Never write `userfs-empty.bin` over user data to preserve.** WebFS and UserFS images overwrite their entire respective partitions. Before provisioning, identify the device and compare the existing table and affected regions; prepare verified backups and obtain authorization for overwriting existing data. A backup alone does not establish that unknown data may be overwritten. After a specifically authorized migration, `esptool.py write_flash` can write the partition table at `0x8000`, application at `0x10000`, WebFS at `0x210000` and an empty UserFS at `0x2D0000`. Exclude NVS and PHY and do not use `erase-flash`. Application-only flashing does not install WebFS.
+**Never write `userfs-empty.bin` over user data to preserve.** WebFS and UserFS images overwrite their entire respective partitions. Before provisioning, identify the device and compare the existing table and affected regions; prepare verified backups and obtain authorization for overwriting existing data. A backup alone does not establish that unknown data may be overwritten. For a first installation or specifically authorized migration, `esptool.py write_flash` can write the partition table at `0x8000`, application at `0x10000`, WebFS at `0x210000` and an empty UserFS at `0x2D0000`. Exclude NVS and PHY and do not use `erase-flash`. Application-only flashing does not install WebFS. For an update on an already provisioned board, verify the installed table, image/profile and bootloader compatibility, back up the affected regions and write only the selected Factory and/or WebFS; do not write the bootloader, table, NVS, PHY or empty UserFS merely to update. The [initial installation and update guide](distribution-proposal.md#initial-installation-versus-update) describes the distinction and required checks.
+
+## Example: explicitly authorized Classic provisioning
+
+For a first installation on a verified ESP32 Classic **only after** identifying and backing up existing data, reviewing the layout and authorizing every affected region, generate the images above and inspect `build-esp32/flash_args`. The following example writes that build's bootloader, partition table and Factory; those writes can make previous data inaccessible. Replace `PORT` with the identified serial port. It does not initialize UserFS or install WebFS:
+
+```sh
+idf.py -B build-esp32 -D SDKCONFIG=sdkconfig.esp32 -p PORT flash
+```
+
+Then, only if writing the complete WebFS region was authorized, install the matching image:
+
+```sh
+python -m esptool --chip esp32 --port PORT write_flash --flash_mode keep --flash_size keep --flash_freq keep 0x210000 build-storage-images/webfs.bin
+```
+
+An erased or incompatible UserFS is not automatically formatted. **Only** after separately verifying its entire target region and expressly authorizing the loss of any data there, initialize it with:
+
+```sh
+python -m esptool --chip esp32 --port PORT write_flash --flash_mode keep --flash_size keep --flash_freq keep 0x2D0000 build-storage-images/userfs-empty.bin
+```
+
+If existing data must be preserved, stop and plan a migration instead. The generated `flash_args` of the chosen S3 build use a different bootloader offset and settings; do not substitute the Classic command without verifying the S3 profile and device. The S3-specific sequence and Windows GUI provisioning have not been independently validated as a first-install workflow.
+
+For an **update**, do not use the `idf.py flash` provisioning command above: after verifying layout, image and installed bootloader compatibility and making backups, the README's `app-flash` command selects only the application. Install WebFS separately only when its replacement is intended and compatible. Check the final images and device operation after writing. The documented write commands are examples; the exact commands above were checked against generated build arguments and esptool help, not executed as a first-install test.
 
 ## Diagnostic UserFS probe
 

@@ -1,6 +1,6 @@
 # Distribution and installation proposal
 
-This is a proposal, not a release or an authorization to flash. Public distribution is blocked by unresolved provenance, licensing and notices. The existing `VERSION` remains the project version; historical RC tags do not certify the newer feature set. All artifacts and settings below must be verified for the exact device and package before use.
+This document describes installation planning, not an instruction to overwrite a device or an authorization to distribute binaries. Source-only distribution and binary redistribution have separate licensing considerations. The existing `VERSION` remains the project version; historical RC tags do not certify the newer feature set. All artifacts and settings below must be verified for the exact device and package before use.
 
 ## Proposed profiles and package
 

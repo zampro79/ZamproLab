@@ -1,6 +1,6 @@
 # Architecture
 
-ZamproLab shares one application codebase across ESP32 Classic and ESP32-S3. ESP-IDF provides hardware and network services; FreeRTOS runs the service tasks. Both Classic and one S3-N16R8 board have been tested, within the limits in the [hardware matrix](hardware.md). The verified S3 uses a 16 MB flash configuration and leaves its physical PSRAM disabled; external S3 GPIO and I²C peripherals remain unvalidated.
+ZamproLab shares one application codebase across ESP32 Classic and ESP32-S3. ESP-IDF provides hardware and network services; FreeRTOS runs the service tasks. Both Classic and one S3-N16R8 board have been tested, within the limits in the [hardware matrix](hardware.md). The verified S3 has 16 MiB flash and 8 MiB physical PSRAM; PSRAM is enabled only in the explicit N16R8 PSRAM profile and remains disabled in the generic profile; external S3 GPIO and I²C peripherals remain unvalidated.
 
 ## Firmware and services
 

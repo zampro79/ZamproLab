@@ -1,6 +1,6 @@
 # Wi-Fi Manager
 
-The default policy for a new installation is `auto`: without STA credentials it starts a WPA2-Personal AP named `ZamproLab-XXXXXX`, using the last three base MAC bytes in uppercase hexadecimal, initially on channel 1, address `192.168.4.1` with ESP-IDF DHCP. The initial AP password is public and educational; change it. Configuration is stored in a dedicated NVS record that is not itself encrypted and does not protect credentials against physical access.
+The default policy for a new installation is `auto`: without STA credentials it starts a WPA2-Personal AP named `ZamproLab-XXXXXX`, using the last three base MAC bytes in uppercase hexadecimal, initially on channel 1, address `192.168.4.1` with ESP-IDF DHCP. The initial AP password is `ZamproLab`; it is public and educational, so change it via the serial console. Existing saved settings can override these defaults. Configuration is stored in a dedicated NVS record that is not itself encrypted and does not protect credentials against physical access.
 
 ## Console
 
