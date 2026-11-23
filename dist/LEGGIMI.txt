@@ -1,0 +1,24 @@
+ZamproLab — immagini per test manuali privati
+
+Origine: build Gitless 19G, commit distribuzione de0e5ece3e0a728fcc8f79d4ed7c81ce83411694.
+Le immagini specifiche non sono state validate su hardware; tool Windows non verificato.
+
+PROFILI
+classic-4mb: ESP32 Classic, 4 MB, Lua ON, flash DIO 40 MHz.
+s3-generic-4mb: ESP32-S3 generico, 4 MB, Lua ON, RGB e PSRAM OFF, DIO 80 MHz.
+s3-rgb-psram-16mb: solo S3-N16R8 compatibile verificata, flash 16 MB, PSRAM octal 8 MB, RGB GPIO48, DIO 80 MHz.
+
+FILE E OFFSET (Flash Download Tool)
+                                 Classic          S3
+bootloader.bin                   0x1000           0x0
+partition-table.bin              0x8000           0x8000
+zamprolab-factory.bin            0x10000          0x10000
+zamprolab-webfs.bin              0x210000         0x210000
+userfs-empty.bin                 0x2D0000         0x2D0000
+
+INITIAL: identificare dispositivo e backup; selezionare bootloader, partition table, Factory e WebFS del solo profilo corretto. La UserFS vuota si usa solo per inizializzazione espressamente voluta: SOVRASCRIVE I FILE UTENTE.
+UPDATE: prima verificare dispositivo, backup, layout installato e compatibilità bootloader; selezionare esclusivamente Factory e WebFS corrispondenti. Non selezionare userfs-empty.bin. Non usare WebFS da sola su Factory precedente non compatibile. NVS/PHY non sono comprese nelle immagini.
+
+WINDOWS: nel Flash Download Tool scegliere chip ESP32 oppure ESP32-S3, Develop, porta COM corretta e immagini/offset autorizzati; 921600 baud o meno se instabile. Consultare FLASHING.txt e release-manifest.json nella cartella scelta. Non usare ERASE o CombineBin per un aggiornamento. Il tool può modificare i parametri di boot: controllare le impostazioni e, ove disponibile e appropriato, usare DoNotChgBin.
+
+Controllare SHA256SUMS.txt prima di usare le immagini. I binari sono esclusivamente per valutazione privata: la redistribuzione pubblica resta soggetta a questioni di licenza aperte.
