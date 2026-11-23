@@ -1,0 +1,34 @@
+PRIVATE EVALUATION — NOT FOR PUBLIC DISTRIBUTION
+Profile s3-rgb-psram-16mb; target esp32s3; flash 16MB, DIO 80m; Lua enabled; 8 MiB octal PSRAM required at 80 MHz; Lua PSRAM allocator, limit 262144 bytes.
+Use only on a verified compatible board. The verified S3 RGB profiles reserve GPIO48 for a GRB LED.
+
+Offsets: bootloader.bin 0x0; partition-table.bin 0x8000; zamprolab-factory.bin 0x10000;
+zamprolab-webfs.bin 0x210000; userfs-empty.bin 0x2d0000. Verify sizes and SHA-256 in release-manifest.json.
+
+INITIAL INSTALLATION overwrites selected regions and can destroy existing data. Identify chip, flash,
+protections and existing layout. Back up data and obtain explicit authority before overwriting.
+NVS at 0x9000 and PHY at 0xf000 are not written; on an erased device NVS initializes at boot.
+UserFS must be initialized using userfs-empty.bin only after expressly authorizing data loss.
+
+Linux esptool v4 (replace PORT and confirm tool/version; use lower baud if unstable):
+esptool.py --chip esp32s3 --port PORT --baud 921600 write_flash --flash_mode dio --flash_freq 80m --flash_size 16MB 0x0 bootloader.bin 0x8000 partition-table.bin 0x10000 zamprolab-factory.bin 0x210000 zamprolab-webfs.bin 0x2d0000 userfs-empty.bin
+
+UPDATE: first verify the installed partition table, target, flash size and Factory/WebFS compatibility.
+Verify that the installed bootloader is compatible with the candidate Factory; if uncertain, stop.
+Back up and verify NVS and UserFS. Preserve bootloader, table, NVS, PHY and UserFS.
+Never select userfs-empty.bin during an update. If layout differs, stop and plan migration.
+WebFS assets larger than 16 KiB require the streaming Factory in this exact package.
+Do not install this WebFS alone onto an older Factory; install and verify the matching Factory first.
+esptool.py --chip esp32s3 --port PORT --baud 921600 write_flash --flash_mode keep --flash_freq keep --flash_size keep 0x10000 zamprolab-factory.bin 0x210000 zamprolab-webfs.bin
+
+Windows Flash Download Tool (not tested): select chip esp32s3, Develop mode and appropriate UART/USB
+load mode and COM port; enter each authorized image and offset above, select compatible SPI settings,
+prefer DoNotChgBin, set 921600 or lower, START, confirm completion and restart. For UPDATE select
+only Factory and WebFS. Never use ERASE or CombineBin for an update. See
+https://docs.espressif.com/projects/esp-test-tools/en/latest/esp32s3/production_stage/tools/flash_download_tool.html
+
+On first boot connect to AP ZamproLab-XXXXXX (last three MAC bytes); factory default password is
+ZamproLab. Open http://192.168.4.1/. Change the default AP password via the administrative
+console. Use a trusted network: HTTP has no authentication or TLS.
+This package is experimental; check the manifest for source-tree status. Its third-party license inventory
+is not complete. No Windows or hardware installation of this package has been validated.

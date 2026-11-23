@@ -1,0 +1,63 @@
+{
+  "project": "ZamproLab",
+  "version": "0.2.0-rc.1",
+  "git_commit": "d49e4247aa90e6001a8a9974f7a80a24b6c49f1e",
+  "git_dirty": true,
+  "source_snapshot_sha256": "faab4ce58c43c8a97d664ae03cd7f53fc3bd05a95320c8a75ddd4676f9f925c0",
+  "target": "esp32s3",
+  "lua_enabled": true,
+  "lua_version": "5.5.1",
+  "dependency_snapshot": {
+    "littlefs_checksums_sha256": "d600b6835c7a2febdd4553cd8a421aeba3d9294338a2f879b14e9147de8dcd1e",
+    "littlefs_component_hash": "dcea25bcef2de023f089f5f01e8d8c46ad1b8ffef75861ad5ffb4098555839df",
+    "lua_source_manifest_sha256": "5fd53cb3d0e2ae7b6d745b3a9777418964b314019d543875e1bbd392b1f845eb"
+  },
+  "esp_idf_version": "5.5.3",
+  "flash_size": "16MB",
+  "psram_enabled": true,
+  "hardware_profile": "s3-rgb-psram-16mb",
+  "rgb_enabled": true,
+  "flash_mode": "dio",
+  "flash_frequency": "80m",
+  "partition_layout_sha256": "57f60ee87c20d0306d868107df27de8ba1c76982e25f0916adf96c0c80e5bf67",
+  "artifacts": {
+    "bootloader": {
+      "file": "bootloader.bin",
+      "size": 20832,
+      "sha256": "536009bc02bd43e81092b63d1223a899883d6b78a8d1e902b54332d6d5eb011d",
+      "offset": 0
+    },
+    "partition_table": {
+      "file": "partition-table.bin",
+      "size": 3072,
+      "sha256": "abf12da1351989a8d9f220917a091a5b37987fab3c31ff57070e10091912fe25",
+      "offset": 32768
+    },
+    "factory": {
+      "file": "zamprolab-factory.bin",
+      "size": 1118688,
+      "sha256": "0b7c8557fa054823fd5e41d3622c27ab79667df2be36b921c10827aacb01372a",
+      "offset": 65536
+    },
+    "webfs": {
+      "file": "zamprolab-webfs.bin",
+      "size": 786432,
+      "sha256": "1d7382892d58bba20c20536e2ff0c5a484805234f0f8a57871a2fcdac224e448",
+      "offset": 2162688
+    },
+    "userfs_empty": {
+      "file": "userfs-empty.bin",
+      "size": 1245184,
+      "sha256": "39c6a28511bc4db203577d3d2c075cab17a9bfb63b05268176f3b3e52f0eb6cf",
+      "offset": 2949120
+    }
+  },
+  "source_provenance": "manifest-unverified",
+  "psram_configuration": {
+    "required_size_bytes": 8388608,
+    "mode": "octal",
+    "frequency_mhz": 80
+  },
+  "lua_heap_limit": 262144,
+  "lua_allocator": "psram"
+}
