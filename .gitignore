@@ -16,3 +16,5 @@ __pycache__/
 # Project-local external sources, obtained separately.
 /.deps/
 
+# Keep local firmware images outside Git.
+/dist/**/*.bin
