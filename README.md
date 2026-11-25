@@ -1,9 +1,25 @@
 # ZamproLab
 
-![ZamproLab banner](web/assets/banner.png)
+<p align="center">
+  <img src="web/assets/banner.png" alt="ZamproLab banner">
+</p>
 
 
 ZamproLab is an embedded learning environment for ESP32. Its browser-based LAB lets you manage UserFS files, edit and save Lua programs, request RUN and STOP, and view their output. Samples are included in the read-only WebFS and must be copied to UserFS before they can run.
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshot/lab_1.png"
+       alt="ZamproLab LAB interface" width="100%">
+</p>
+
+<p align="center">
+  <img src="docs/screenshot/lab_2.png"
+       alt="ZamproLab LAB workspace" width="47%">
+  <img src="docs/screenshot/system_1.png"
+       alt="ZamproLab System interface" width="52%">
+</p>
 
 ## Features and hardware
 
